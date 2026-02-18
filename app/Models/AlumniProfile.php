@@ -23,10 +23,16 @@ class AlumniProfile extends Model
         'profile_picture_path',
         'is_verified',
         'is_private',
+        'has_business',
+        'business_name',
+        'business_type',
+        'business_photo',
+        'business_description',
     ];
 
     protected $casts = [
         'social_media_links' => 'array',
+        'has_business' => 'boolean',
         'is_verified'        => 'boolean',
         'is_private'         => 'boolean',
     ];
