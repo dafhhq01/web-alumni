@@ -10,6 +10,19 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
+
+        // Di dalam file seeder baru atau gabung di AdminSeeder
+        $superAdmin = User::updateOrCreate(
+            ['email' => 'superadmin@alumni.com'],
+            [
+                'name'              => 'Super Administrator',
+                'password'          => Hash::make('super123'),
+                'role'              => 'super-admin', // Pastikan di database enum/string ini diizinkan
+                'email_verified_at' => now(),
+            ]
+        );
+        $superAdmin->assignRole('super-admin');
+
         // Buat user admin (atau update kalau sudah ada)
         $admin = User::updateOrCreate(
             ['email' => 'admin@alumni.com'],
@@ -24,6 +37,7 @@ class AdminSeeder extends Seeder
         // Assign Spatie role
         $admin->assignRole('admin');
 
+        $this->command->info('✅ Super admin created: superadmin@alumni.com / super123');
         $this->command->info('✅ Admin created: admin@alumni.com / admin123');
     }
 }

@@ -112,3 +112,31 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/donations/{id}', [AdminDonationController::class, 'update'])->name('donations.update');
         Route::delete('/donations/{id}', [AdminDonationController::class, 'destroy'])->name('donations.destroy');
     });
+
+
+
+Route::middleware(['auth', 'role:super-admin'])
+    ->prefix('super-admin')
+    ->name('super-admin.')
+    ->group(function () {
+        Route::get('/dashboard', [App\Http\Controllers\SuperAdminDashboardController::class, 'index'])->name('dashboard');
+
+        // Rute untuk Kelola Admin
+        Route::resource('manage-admins', App\Http\Controllers\SuperAdmin\ManageAdminController::class);
+    });
+
+
+Route::get('/dashboard', function () {
+    $role = auth()->user()->role;
+    if ($role === 'super-admin') return redirect()->route('super-admin.dashboard');
+    if ($role === 'admin') return redirect()->route('admin.dashboard');
+    return redirect()->route('alumni.profile');
+})->middleware(['auth'])->name('dashboard');
+
+
+
+Route::get('/profile-redirect', function () {
+    $role = auth()->user()->role;
+    if ($role === 'alumni') return redirect()->route('alumni.profile.edit');
+    return redirect()->back()->with('info', 'Admin tidak memiliki profil alumni.');
+})->middleware(['auth'])->name('profile.edit');

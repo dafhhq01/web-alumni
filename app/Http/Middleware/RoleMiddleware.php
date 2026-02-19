@@ -10,15 +10,20 @@ class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (!$request->user()) {
-            return redirect()->route('login');
+        if (!$request->user()) return redirect()->route('login');
+
+        $userRole = $request->user()->role;
+
+        // Super Admin adalah "Tuhan" di aplikasi, izinkan akses ke mana saja
+        if ($userRole === 'super-admin') {
+            return $next($request);
         }
 
-        if ($request->user()->role !== $role) {
-            // Redirect ke halaman yang sesuai dengan role aslinya
-            if ($request->user()->role === 'admin') {
+        if ($userRole !== $role) {
+            if ($userRole === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
+            // Alumni yang belum verifikasi/selesai profil tetap ke sini
             return redirect()->route('alumni.profile');
         }
 

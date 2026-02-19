@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <title>{{ config('app.name', 'Alumni System') }} - Admin - @yield('title', 'Dashboard')</title>
+    <title>{{ config('app.name', 'Alumni System') }} - @yield('title', 'Profile')</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,9 +15,6 @@
     
     <!-- Alpine.js CDN -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <!-- TinyMCE CDN (untuk News & Events) -->
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
     <style>
         [x-cloak] { display: none !important; }
@@ -30,56 +27,29 @@
     <div class="flex h-screen overflow-hidden" x-data="{ sidebarOpen: false }">
         
         <!-- Sidebar -->
-        <aside class="fixed inset-y-0 left-0 z-50 w-64 bg-gray-900 shadow-lg transform transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0"
+        <aside class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0"
                :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
             
             <!-- Logo -->
-            <div class="flex items-center justify-center h-16 bg-gray-800">
+            <div class="flex items-center justify-center h-16 bg-blue-600">
                 <span class="text-xl font-bold text-white">Admin Panel</span>
             </div>
 
             <!-- Navigation -->
             <nav class="mt-8 px-4 space-y-2">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.dashboard') ? 'bg-gray-800 text-white' : '' }}">
-                    <i class="fas fa-chart-line mr-3"></i>
+                <a href="{{ route('alumni.profile') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 {{ request()->routeIs('alumni.profile') ? 'bg-blue-50 text-blue-600' : '' }}">
+                    <i class="fas fa-user mr-3"></i>
                     <span>Dashboard</span>
                 </a>
 
-                <a href="{{ route('admin.alumni.index') }}" class="flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.alumni.*') ? 'bg-gray-800 text-white' : '' }}">
-                    <i class="fas fa-users mr-3"></i>
-                    <span>Alumni</span>
-                </a>
-
-                <a href="{{ route('admin.news.index') }}" class="flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.news.*') ? 'bg-gray-800 text-white' : '' }}">
-                    <i class="fas fa-newspaper mr-3"></i>
-                    <span>News</span>
-                </a>
-
-                <a href="{{ route('admin.events.index') }}" class="flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.events.*') ? 'bg-gray-800 text-white' : '' }}">
-                    <i class="fas fa-calendar mr-3"></i>
-                    <span>Events</span>
-                </a>
-
-                <a href="{{ route('admin.gallery.index') }}" class="flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.gallery.*') ? 'bg-gray-800 text-white' : '' }}">
-                    <i class="fas fa-images mr-3"></i>
-                    <span>Gallery</span>
-                </a>
-
-                <a href="{{ route('admin.donations.index') }}" class="flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white {{ request()->routeIs('admin.donations.*') ? 'bg-gray-800 text-white' : '' }}">
-                    <i class="fas fa-hand-holding-heart mr-3"></i>
-                    <span>Donations</span>
-                </a>
-
-                <div class="border-t border-gray-800 my-4"></div>
-
-                <a href="{{ route('home') }}" class="flex items-center px-4 py-3 text-gray-300 rounded-lg hover:bg-gray-800 hover:text-white">
+                <a href="{{ route('home') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600">
                     <i class="fas fa-home mr-3"></i>
-                    <span>View Site</span>
+                    <span>Back to Home</span>
                 </a>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="w-full flex items-center px-4 py-3 text-red-400 rounded-lg hover:bg-gray-800 hover:text-red-300">
+                    <button type="submit" class="w-full flex items-center px-4 py-3 text-red-600 rounded-lg hover:bg-red-50">
                         <i class="fas fa-sign-out-alt mr-3"></i>
                         <span>Logout</span>
                     </button>
@@ -99,15 +69,15 @@
                     </button>
 
                     <div class="flex-1 lg:ml-0 ml-4">
-                        <h1 class="text-xl font-semibold text-gray-800">@yield('page-title', 'Dashboard')</h1>
+                        <h1 class="text-xl font-semibold text-gray-800">@yield('page-title', 'Profile')</h1>
                     </div>
 
                     <!-- User Info -->
                     <div class="flex items-center space-x-4">
                         <span class="text-sm text-gray-600 hidden sm:block">{{ auth()->user()->name }}</span>
-                        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
-                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                        </div>
+                        <img src="{{ auth()->user()->alumniProfile?->profile_picture_url ?? asset('images/default-avatar.png') }}" 
+                             alt="Profile" 
+                             class="w-10 h-10 rounded-full border-2 border-blue-600">
                     </div>
                 </div>
             </header>

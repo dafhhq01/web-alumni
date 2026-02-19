@@ -12,10 +12,10 @@ class RoleSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Buat 2 role
+        Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
         Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         Role::firstOrCreate(['name' => 'alumni', 'guard_name' => 'web']);
 
-        $this->command->info('✅ Roles created: admin, alumni');
+        $this->command->info('✅ Roles created: super admin, admin, alumni');
     }
 }

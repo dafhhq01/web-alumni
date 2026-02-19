@@ -1,4 +1,4 @@
-@extends('layouts.alumni') {{-- Menggunakan layout yang sama agar gaya konsisten --}}
+@extends('layouts.admin') {{-- Menggunakan layout yang sama agar gaya konsisten --}}
 
 @section('title', 'Admin Dashboard')
 @section('page-title', 'Admin Overview')

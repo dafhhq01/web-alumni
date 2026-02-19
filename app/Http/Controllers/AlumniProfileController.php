@@ -15,9 +15,12 @@ class AlumniProfileController extends Controller
      */
     public function show()
     {
-        $profile = auth()->user()->alumniProfile;
+        // Jika yang akses bukan alumni (Admin/Super Admin), tendang ke dashboard masing-masing
+        if (auth()->user()->role !== 'alumni') {
+            return redirect()->route(auth()->user()->role . '.dashboard');
+        }
 
-        // Jika belum ada profil, redirect ke complete profile
+        $profile = auth()->user()->alumniProfile;
         if (!$profile) {
             return redirect()->route('alumni.profile.complete');
         }
@@ -30,7 +33,11 @@ class AlumniProfileController extends Controller
      */
     public function complete()
     {
-        // Jika sudah punya profil, redirect ke profile
+        // Cegah Super Admin/Admin masuk ke halaman "Lengkapi Profil"
+        if (auth()->user()->role !== 'alumni') {
+            return redirect()->route(auth()->user()->role . '.dashboard');
+        }
+
         if (auth()->user()->alumniProfile) {
             return redirect()->route('alumni.profile');
         }

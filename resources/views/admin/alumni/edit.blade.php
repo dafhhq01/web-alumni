@@ -1,4 +1,4 @@
-@extends('layouts.alumni')
+@extends('layouts.admin')
 
 @section('title', 'Edit Alumni - ' . $alumnus->full_name)
 

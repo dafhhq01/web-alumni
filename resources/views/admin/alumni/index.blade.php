@@ -1,4 +1,4 @@
-@extends('layouts.alumni')
+@extends('layouts.admin')
 
 @section('title', 'Manage Alumni')
 @section('page-title', 'Alumni Management')
