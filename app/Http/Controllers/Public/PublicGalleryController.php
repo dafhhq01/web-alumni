@@ -13,7 +13,6 @@ class PublicGalleryController extends Controller
      */
     public function index()
     {
-        // Group photos by album_name
         $albums = Gallery::select('album_name', 'event_year')
             ->selectRaw('MIN(image_path) as cover_image')
             ->selectRaw('COUNT(*) as photo_count')
@@ -22,24 +21,25 @@ class PublicGalleryController extends Controller
             ->orderBy('album_name')
             ->get();
 
-        return view('public.gallery.index', compact('albums'));
+        // SESUAIKAN: Gunakan folder 'galleries' (sesuai folder fisik kamu)
+        return view('public.galleries.index', compact('albums'));
     }
 
     /**
      * Display photos in specific album
      */
-    public function album($albumName)
+    public function album($album_name)
     {
-        $photos = Gallery::where('album_name', $albumName)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $decodedName = urldecode($album_name);
+        $photos = \App\Models\Gallery::where('album_name', $decodedName)->get();
 
         if ($photos->isEmpty()) {
-            abort(404);
+            abort(404, 'Album tidak ditemukan');
         }
 
         $albumInfo = $photos->first();
 
-        return view('public.gallery.album', compact('photos', 'albumInfo'));
+        // SESUAIKAN: Harus sama jalurnya dengan index (folder 'galleries')
+        return view('public.galleries.album', compact('photos', 'albumInfo'));
     }
 }

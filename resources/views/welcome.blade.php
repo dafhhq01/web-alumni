@@ -115,38 +115,35 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @if(isset($albums) && $albums->count() > 0)
-                @foreach($albums->take(3) as $album)
-                <div class="rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300" style="background: linear-gradient(180deg, #7391E7 0%, #EFE6F7 100%); padding: 4px;">
-                    <div class="bg-white rounded-lg overflow-hidden">
-                        @if($album->image_path)
-                        <img src="{{ asset('storage/' . $album->image_path) }}" alt="{{ $album->title }}" class="w-full h-48 object-cover">
-                        @else
-                        <div class="w-full h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #7391E7 0%, #EFE6F7 100%);">
-                            <i class="fas fa-images text-white text-4xl"></i>
-                        </div>
-                        @endif
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-800">{{ $album->title }}</h3>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-                @else
-                <!-- Placeholder Album Cards -->
-                @for($i = 0; $i < 3; $i++)
-                    <div class="rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300" style="background: linear-gradient(180deg, #7391E7 0%, #EFE6F7 100%); padding: 4px;">
-                    <div class="bg-white rounded-lg overflow-hidden">
-                        <div class="w-full h-48 flex items-center justify-center" style="background: linear-gradient(135deg, #1a3a52 0%, #2d5a7b 50%, #4a90a4 100%);">
-                            <div class="text-center">
-                                <div class="w-16 h-16 mx-auto mb-2 rounded-full bg-white/20 flex items-center justify-center">
-                                    <i class="fas fa-graduation-cap text-white text-2xl"></i>
+                @foreach($albums as $album)
+                <a href="{{ route('gallery.album', urlencode($album->album_name)) }}" class="group">
+                    <div class="rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300" style="background: linear-gradient(180deg, #7391E7 0%, #EFE6F7 100%); padding: 4px;">
+                        <div class="bg-white rounded-lg overflow-hidden">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="{{ asset('storage/' . $album->cover_image) }}"
+                                    alt="{{ $album->album_name }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+
+                                {{-- Badge Jumlah Foto --}}
+                                <div class="absolute bottom-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded-md backdrop-blur-sm">
+                                    <i class="fas fa-images mr-1"></i> {{ $album->photo_count }} Foto
                                 </div>
                             </div>
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-semibold text-gray-800">Wisuda</h3>
+
+                            <div class="p-4">
+                                <h3 class="font-bold text-gray-800 truncate">{{ $album->album_name }}</h3>
+                                <p class="text-xs text-blue-600 font-medium">{{ $album->event_year ?? 'Tahun tidak diset' }}</p>
+                            </div>
                         </div>
                     </div>
+                </a>
+                @endforeach
+                @else
+                {{-- Placeholder jika kosong --}}
+                @for($i = 0; $i < 3; $i++)
+                    <div class="rounded-xl overflow-hidden bg-gray-100 p-8 text-center border-2 border-dashed border-gray-200">
+                    <i class="fas fa-image text-gray-300 text-4xl mb-2"></i>
+                    <p class="text-gray-400 text-sm">Belum ada album</p>
             </div>
             @endfor
             @endif
@@ -220,38 +217,33 @@
         </h2>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            @if(isset($pengurus) && $pengurus->count() > 0)
-            @foreach($pengurus->take(4) as $p)
-            <div class="text-center">
-                <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden shadow-lg" style="background: linear-gradient(135deg, #7391E7 0%, #EFE6F7 100%); padding: 3px;">
+            {{-- Data Manual Pengurus --}}
+            @php
+            $manualPengurus = [
+            ['name' => 'Nama Ketua', 'jabatan' => 'Ketua Alumni', 'foto' => 'default-avatar.png'],
+            ['name' => 'Nama Wakil', 'jabatan' => 'Wakil Ketua', 'foto' => 'default-avatar.png'],
+            ['name' => 'Nama Sekretaris', 'jabatan' => 'Sekretaris', 'foto' => 'default-avatar.png'],
+            ['name' => 'Nama Bendahara', 'jabatan' => 'Bendahara', 'foto' => 'default-avatar.png'],
+            ];
+            @endphp
+
+            @foreach($manualPengurus as $p)
+            <div class="text-center group">
+                <div class="w-24 h-24 md:w-32 md:h-32 mx-auto mb-4 rounded-full overflow-hidden shadow-lg transition-transform duration-300 group-hover:scale-105"
+                    style="background: linear-gradient(135deg, #7391E7 0%, #EFE6F7 100%); padding: 3px;">
                     <div class="w-full h-full rounded-full overflow-hidden bg-white">
-                        @if($p->photo_path)
-                        <img src="{{ asset('storage/' . $p->photo_path) }}" alt="{{ $p->name }}" class="w-full h-full object-cover">
-                        @else
-                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-purple-400">
-                            <i class="fas fa-user text-white text-2xl"></i>
-                        </div>
-                        @endif
+                        {{-- Mengambil foto dari public/images/ --}}
+                        <img src="{{ asset('images/' . $p['foto']) }}"
+                            alt="{{ $p['name'] }}"
+                            class="w-full h-full object-cover shadow-inner"
+                            onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($p['name']) }}&color=7F9CF5&background=EBF4FF'">
                     </div>
                 </div>
-                <h3 class="font-semibold text-gray-800">{{ $p->name }}</h3>
-                <p class="text-sm text-gray-500">{{ $p->jabatan ?? 'Anggota' }}</p>
+                <h3 class="font-bold text-gray-800">{{ $p['name'] }}</h3>
+                <p class="text-sm text-blue-500 font-medium">{{ $p['jabatan'] }}</p>
             </div>
             @endforeach
-            @else
-            <!-- Placeholder Pengurus Cards -->
-            @for($i = 0; $i < 4; $i++)
-                <div class="text-center">
-                <div class="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden shadow-lg" style="background: linear-gradient(135deg, #7391E7 0%, #EFE6F7 100%); padding: 3px;">
-                    <div class="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center" style="background: linear-gradient(135deg, #1a3a52 0%, #2d5a7b 100%);">
-                        <i class="fas fa-user text-white text-2xl"></i>
-                    </div>
-                </div>
-                <h3 class="font-semibold text-gray-800">Wildan</h3>
         </div>
-        @endfor
-        @endif
-    </div>
     </div>
 </section>
 

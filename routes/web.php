@@ -27,7 +27,7 @@ Route::get('/events', [PublicEventController::class, 'index'])->name('events.ind
 Route::get('/events/{slug}', [PublicEventController::class, 'show'])->name('events.show');
 
 Route::get('/gallery', [PublicGalleryController::class, 'index'])->name('gallery.index');
-Route::get('/gallery/{album}', [PublicGalleryController::class, 'album'])->name('gallery.album');
+Route::get('/gallery/{album_name}', [PublicGalleryController::class, 'album'])->name('gallery.album');
 
 Route::get('/alumni', [PublicAlumniController::class, 'index'])->name('alumni.directory');
 Route::get('/alumni/{id}', [PublicAlumniController::class, 'show'])
@@ -104,6 +104,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/gallery/create', [AdminGalleryController::class, 'create'])->name('gallery.create');
         Route::post('/gallery', [AdminGalleryController::class, 'store'])->name('gallery.store');
         Route::delete('/gallery/{id}', [AdminGalleryController::class, 'destroy'])->name('gallery.destroy');
+        Route::get('/gallery/{id}/edit', [AdminGalleryController::class, 'edit'])->name('gallery.edit');
+        Route::put('/gallery/{id}', [AdminGalleryController::class, 'update'])->name('gallery.update');
 
         // Donation Management
         Route::get('/donations', [AdminDonationController::class, 'index'])->name('donations.index');

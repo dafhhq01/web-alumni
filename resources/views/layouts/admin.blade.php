@@ -61,6 +61,11 @@
                     <span>Event</span>
                 </a>
 
+                <a href="{{ route('admin.gallery.index') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 {{ request()->routeIs('admin.gallery.*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                    <i class="fas fa-images mr-3 w-5 text-center"></i>
+                    <span>Gallery</span>
+                </a>
+
                 <a href="{{ route('admin.donations.index') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 {{ request()->routeIs('admin.donations.*') ? 'bg-blue-50 text-blue-600' : '' }}">
                     <i class="fas fa-hand-holding-heart mr-3 w-5 text-center"></i>
                     <span>Donation</span>

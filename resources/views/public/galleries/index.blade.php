@@ -15,7 +15,7 @@
     @if($albums->count() > 0)
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($albums as $album)
-                <a href="{{ route('gallery.album', urlencode($album->album_name)) }}" 
+                <a href="{{ route('gallery.album', ['album_name' => $album->album_name]) }}"
                    class="group relative bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
                     
                     <!-- Cover Image -->
