@@ -19,4 +19,10 @@ class PublicDonationController extends Controller
 
         return view('public.donations.index', compact('donations'));
     }
+
+    public function show($id)
+    {
+        $donation = Donation::findOrFail($id);
+        return view('public.donations.show', compact('donation'));
+    }
 }

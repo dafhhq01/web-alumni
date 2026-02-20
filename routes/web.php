@@ -35,6 +35,7 @@ Route::get('/alumni/{id}', [PublicAlumniController::class, 'show'])
     ->where('id', '[0-9]+'); // Hanya izinkan angka 0-9
 
 Route::get('/donations', [PublicDonationController::class, 'index'])->name('donations.index');
+Route::get('/donations/{id}', [PublicDonationController::class, 'show'])->name('donations.show');
 
 
 // AUTH ROUTES (dari Breeze)
