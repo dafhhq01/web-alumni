@@ -56,10 +56,14 @@
                     <span>News</span>
                 </a>
 
-                {{-- Ganti 'admin.events.index' dengan nama route event kamu yang benar --}}
-                <a href="#" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 {{ request()->routeIs('admin.events.*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                <a href="{{ route('admin.events.index') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 {{ request()->routeIs('admin.events.*') ? 'bg-blue-50 text-blue-600' : '' }}">
                     <i class="fas fa-calendar-alt mr-3 w-5 text-center"></i>
                     <span>Event</span>
+                </a>
+
+                <a href="{{ route('admin.donations.index') }}" class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 {{ request()->routeIs('admin.donations.*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                    <i class="fas fa-hand-holding-heart mr-3 w-5 text-center"></i>
+                    <span>Donation</span>
                 </a>
 
                 <hr class="my-4 border-gray-100">
